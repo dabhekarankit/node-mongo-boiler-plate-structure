@@ -1,0 +1,110 @@
+openapi: "3.0.2"
+info:
+  title: API Title
+  version: "1.0"
+servers:
+  - url: https://api.server.test/v1
+
+components:
+  securitySchemes:
+    bearerAuth: 
+      description: "#### Example: Bearer [TOKEN]"
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    successResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: success message
+              data:
+                type: string
+                example:
+
+    errorResponse:
+      description: Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: true
+              statusCode:
+                type: integer
+                example: 422
+              message:
+                type: string
+                example: idToken is not allowed to be empty
+
+paths:
+  /v1/users/register:
+    post:
+      summary: Register
+      description: ""
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Snow
+                email:
+                  type: string
+                  example: john.snow@mailinator.com
+                number:
+                  type: string
+                  example: "+91 9558688745"
+                password:
+                  type: string
+                  example: password
+                profileImage:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          $ref: "#/components/responses/successResponse"
+        "422":
+          $ref: "#/components/responses/errorResponse"
+
+  /v1/users/login:
+    post:
+      summary: Login
+      description: ""
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: john.snow@mailinator.com
+                password:
+                  type: string
+                  example: "password"
+      responses:
+        "200":
+          $ref: "#/components/responses/successResponse"
+        "422":
+          $ref: "#/components/responses/errorResponse"
+
+ 
